@@ -15,33 +15,31 @@ RUN apk add --no-cache --virtual .build-utils gcc g++ make git cmake gnutls-dev 
     cd /src && \
     # Clone the requested version
     #git clone --depth 1 https://github.com/goldstar/stellar-anope-modules.git stellar-anope-modules && \ 
-    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION && \
-    cd /src/anope
+    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION
 
 COPY ./stellar-anope-modules /src/stellar-anope-modules
 
-RUN ls -lah /src
-
-# RUN ln -s /src/anope/modules/extra/m_ssl_gnutls.cpp modules && \
-#     ln -s /src/anope/modules/extra/m_mysql.cpp modules && \
-#     # ln -s /src/anope/modules/extra/m_sqlite.cpp modules && \
-#     # Add the thirdparty modules 
-#     ln -s /src/stellar-anope-modules/modules/* modules/third && \
-#     mkdir build && \
-#     cd /src/anope/build && \
-#     cmake -DINSTDIR=/anope/ -DDEFUMASK=077 -DCMAKE_BUILD_TYPE=RELEASE .. && \
-#     # Run build multi-threaded
-#     make -j`getconf _NPROCESSORS_ONLN` install && \
-#     # Uninstall all unnecessary tools after build process
-#     apk del .build-utils && \
-#     rm -rf /src && \
-#     # Provide a data location
-#     mkdir -p /data && \
-#     touch /data/anope.db && \
-#     ln -s /data/anope.db /anope/data/anope.db && \
-#     # Make sure everything is owned by anope
-#     chown -R anope /anope/ && \
-#     chown -R anope /data/
+RUN cd /src/anope && \
+    ln -s /src/anope/modules/extra/m_ssl_gnutls.cpp modules && \
+    ln -s /src/anope/modules/extra/m_mysql.cpp modules && \
+    # ln -s /src/anope/modules/extra/m_sqlite.cpp modules && \
+    # Add the thirdparty modules 
+    ln -s /src/stellar-anope-modules/modules/* modules/third && \
+    mkdir build && \
+    cd /src/anope/build && \
+    cmake -DINSTDIR=/anope/ -DDEFUMASK=077 -DCMAKE_BUILD_TYPE=RELEASE .. && \
+    # Run build multi-threaded
+    make -j`getconf _NPROCESSORS_ONLN` install && \
+    # Uninstall all unnecessary tools after build process
+    apk del .build-utils && \
+    rm -rf /src && \
+    # Provide a data location
+    mkdir -p /data && \
+    touch /data/anope.db && \
+    ln -s /data/anope.db /anope/data/anope.db && \
+    # Make sure everything is owned by anope
+    chown -R anope /anope/ && \
+    chown -R anope /data/
 
 COPY ./conf/ /anope/conf/
 
