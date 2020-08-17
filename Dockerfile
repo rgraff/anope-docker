@@ -15,7 +15,7 @@ RUN apk add --no-cache --virtual .build-utils gcc g++ make git cmake gnutls-dev 
     cd /src && \
     # Clone the requested version
     #git clone --depth 1 https://github.com/goldstar/stellar-anope-modules.git stellar-anope-modules && \ 
-    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION \
+    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION && \
     cd /src/anope
 
 COPY ./stellar-anope-modules /src/stellar-anope-modules
