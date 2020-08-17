@@ -14,11 +14,13 @@ RUN apk add --no-cache --virtual .build-utils gcc g++ make git cmake gnutls-dev 
     mkdir -p /src && \
     cd /src && \
     # Clone the requested version
-    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION && \
-    git clone --depth 1 https://github.com/goldstar/stellar-anope-modules stellar-anope-modules && \ 
-    cd /src/anope && \
-    # Add and overwrite modules
-    ln -s /src/anope/modules/extra/m_ssl_gnutls.cpp modules && \
+    #git clone --depth 1 https://github.com/goldstar/stellar-anope-modules.git stellar-anope-modules && \ 
+    git clone --depth 1 https://github.com/anope/anope.git anope -b $VERSION \
+    cd /src/anope
+
+COPY ./stellar-anope-modules /src/stellar-anope-modules
+
+RUN ln -s /src/anope/modules/extra/m_ssl_gnutls.cpp modules && \
     ln -s /src/anope/modules/extra/m_mysql.cpp modules && \
     # ln -s /src/anope/modules/extra/m_sqlite.cpp modules && \
     # Add the thirdparty modules 
